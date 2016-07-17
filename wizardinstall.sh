@@ -3,15 +3,17 @@
 # Program: Dev mode install
 # Developer: Wizard of Bots
 # Site: http://wizardofbots.com/network
+# Github: https://github.com/wizardofbots/wizardinstall
 # Date: 16-07-2016
 # ******************************************
-
-if [ "`lsb_release -is`" == "Ubuntu" ] || [ "`lsb_release -is`" == "Debian" ]
+# this line below is checking if the lsb_release -is comment response is 
+# equal to Ubuntu and also Debian, because we can use apt-get instead of yum.
+if [ "`lsb_release -is`" == "Ubuntu" ] || [ "`lsb_release -is`" == "Debian" ] 
 then
-    # save time and install essential
+    # save time and install essential and then all libraries
     sudo apt-get install -y build-essential;
     # install git
-    sudo apt-get install git;
+    sudo apt-get install git; # git is really useful, in fact clone this from: https://github.com/wizardofbots/wizardinstall
     # install python
     sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev;
     sudo apt-get python2.7;
@@ -39,9 +41,10 @@ then
     sudo chmod 777 -R /var/www/;
     sudo printf "<?php\nphpinfo();\n?>" > /var/www/html/info.php;
     sudo service apache2 restart;
-
+# then this logic identifies if the release is CentOS or RedHat so we can use yum
 elif [ "`lsb_release -is`" == "CentOS" ] || [ "`lsb_release -is`" == "RedHat" ]
 then
+    # this lines are not working properly right now. So wait for the update
     sudo yum -y install httpd mysql-server mysql-devel php php-mysql php-fpm;
     sudo yum -y install epel-release phpmyadmin rpm-build redhat-rpm-config;
     sudo yum -y install mysql-community-release-el7-5.noarch.rpm proj;
@@ -53,6 +56,7 @@ then
     sudo chkconfig httpd on;
     sudo chkconfig mysqld on;
 
+# we will add pacman for Arch Linux soon
 else
     echo "Unsupported Operating System";
 fi
